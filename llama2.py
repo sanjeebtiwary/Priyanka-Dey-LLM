@@ -1,26 +1,18 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
-
 import requests
+from transformers import pipeline
 
 API_URL = "https://api-inference.huggingface.co/models/meta-llama/Llama-2-7b-chat-hf"
 headers = {"Authorization": "Bearer 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"}
-
 
 def query(payload):
     response = requests.post(API_URL, headers=headers, json=payload)
     return response.json()
 
-
-from transformers import pipeline
-
 pipe = pipeline("text-generation", model="meta-llama/Llama-2-7b-chat-hf")
-
-# Load model directly
-from transformers import AutoTokenizer, AutoModelForCausalLM
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
 model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
-
 
 def generate_summary(input_text):
     input_ids = tokenizer.encode(input_text, return_tensors="pt", max_length=1024, truncation=True)
